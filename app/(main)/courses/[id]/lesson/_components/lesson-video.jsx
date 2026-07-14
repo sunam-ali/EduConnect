@@ -26,7 +26,7 @@ export const LessonVideo = ({ courseId, lesson, module }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          courseId: courseId,
+          courseId,
           lessonId: lesson.id,
           moduleSlug: module,
           state: "started",
@@ -40,8 +40,11 @@ export const LessonVideo = ({ courseId, lesson, module }) => {
         setStarted(false);
       }
     }
-    started && updateLessonWatch();
-  }, [started]);
+
+    if (started) {
+      updateLessonWatch();
+    }
+  }, [started, courseId, lesson.id, module]);
 
   useEffect(() => {
     async function updateLessonWatch() {
@@ -51,7 +54,7 @@ export const LessonVideo = ({ courseId, lesson, module }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          courseId: courseId,
+          courseId,
           lessonId: lesson.id,
           moduleSlug: module,
           state: "completed",
@@ -61,12 +64,17 @@ export const LessonVideo = ({ courseId, lesson, module }) => {
 
       if (response.status === 200) {
         const result = await response.text();
+        console.log(result);
+
         setEnded(false);
         router.refresh();
       }
     }
-    ended && updateLessonWatch();
-  }, [ended]);
+
+    if (ended) {
+      updateLessonWatch();
+    }
+  }, [ended, courseId, duration, lesson.id, module, router]);
 
   function handleOnStart() {
     console.log("handleOnStart");
@@ -84,7 +92,7 @@ export const LessonVideo = ({ courseId, lesson, module }) => {
   }
 
   function handleOnProgress(state) {
-    //console.log("handleOnProgress", state);
+    // console.log("handleOnProgress", state);
   }
 
   return (
@@ -94,7 +102,7 @@ export const LessonVideo = ({ courseId, lesson, module }) => {
           url={lesson.video_url}
           width="100%"
           height="470px"
-          controls={true}
+          controls
           onStart={handleOnStart}
           onDuration={handleOnDuration}
           onProgress={handleOnProgress}
