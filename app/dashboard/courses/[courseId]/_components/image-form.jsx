@@ -50,7 +50,7 @@ export const ImageForm = ({ initialData, courseId }) => {
 
       uploadFile();
     }
-  }, [file]);
+  }, [courseId, file, initialData, router]);
 
   const toggleEdit = () => setIsEditing((current) => !current);
 

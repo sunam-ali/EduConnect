@@ -51,7 +51,7 @@ export const UploadDropzone = (props) => {
     setUploadProgress(100);
     clearInterval(progressInterval);
     onUpload(acceptedFiles);
-  }, []);
+  }, [onUpload]);
 
   const { getRootProps, getInputProps, fileRejections } = useDropzone({
     onDrop,
